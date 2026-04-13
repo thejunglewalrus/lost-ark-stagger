@@ -342,8 +342,6 @@ function renderSkillList() {
     if (s.is_counter) badges += '<span class="badge badge-ctr">CTR</span>';
     if (s.stance) badges += `<span class="badge badge-stance">${s.stance}</span>`;
     if (s.chain_info?.type === 'summon') badges += '<span class="badge badge-summon">SUMMON</span>';
-    if (s.chain_info?.type === 'hold_pz') badges += '<span class="badge badge-hold">PZ</span>';
-    if (s.chain_info?.type === 'hold') badges += '<span class="badge badge-stance">HOLD</span>';
     if (s.chain_info?.type === 'multi_press') badges += '<span class="badge badge-chain">CHAIN</span>';
     if (s.chain_info?.ground_effect) badges += '<span class="badge" style="background:rgba(45,200,143,.15);color:var(--green)">GROUND</span>';
 
