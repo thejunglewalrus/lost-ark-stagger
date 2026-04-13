@@ -208,6 +208,11 @@ let bossData = null;
 let selectedSkill = null;
 let partySize = 4;
 
+// True if the skill has any bible popularity data we can use for defaults
+function hasBiblePopularity(skill) {
+  return Array.isArray(skill.all_tripods) && skill.all_tripods.length > 0;
+}
+
 // Compute the default tripod slot per tier from bible popularity data
 function getDefaultTripodSlots(skill) {
   const defaults = {};
@@ -227,11 +232,15 @@ function getDefaultTripodSlots(skill) {
   return defaults;
 }
 
+// Returns the current stagger total WITH tripods applied, or null if we
+// don't have enough data to populate the rail (no bible popularity AND no
+// user selection yet).
 function getActiveStagger(skill) {
+  const userSel = window._selectedTripods && window._selectedTripods[skill.name];
+  // If no user override and no bible popularity, hide the number entirely
+  if (!userSel && !hasBiblePopularity(skill)) return null;
   let stag = skill.base_stagger;
   if (!skill.tripod_tiers) return stag;
-  // Use explicit user selection if present, otherwise fall back to bible-popular defaults
-  const userSel = window._selectedTripods && window._selectedTripods[skill.name];
   const sel = userSel || getDefaultTripodSlots(skill);
   skill.tripod_tiers.forEach(tier => {
     if (sel[tier.tier] != null) {
@@ -316,13 +325,14 @@ function renderSkillList() {
   const showAwk = document.getElementById('filterAwk').checked;
   const showCtr = document.getElementById('filterCtr').checked;
   const skills = classData.skills;
-  const max = Math.max(...skills.map(s => getActiveStagger(s)), 1);
+  const activeVals = skills.map(s => getActiveStagger(s)).filter(v => v != null);
+  const max = Math.max(...activeVals, 1);
 
   list.innerHTML = skills.map(s => {
     const hidden = (!showAwk && s.is_awakening) || (!showCtr && s.is_counter);
     const stag = getActiveStagger(s);
-    const ratio = stag / max;
-    const color = ratio > 0.7 ? 'rgb(45,200,143)' : ratio > 0.4 ? 'rgb(200,170,50)' : 'rgb(120,120,120)';
+    const hasValue = stag != null;
+    const ratio = hasValue ? stag / max : 0;
     // Color the stagger value like bible colors usage% (green gradient)
     const g = Math.round(143 + (1 - ratio) * -80);
     const staggerColor = `rgb(45,${Math.max(100,Math.round(200*ratio))},${Math.max(80,g)})`;
@@ -350,7 +360,7 @@ function renderSkillList() {
       <div class="skill-icon">${iconHtml}</div>
       <span class="skill-name">${displayName}</span>
       <div class="skill-badges">${badges}</div>
-      <span class="skill-usage" style="color:${staggerColor}">${stag.toLocaleString()}</span>
+      <span class="skill-usage" style="color:${staggerColor}">${hasValue ? stag.toLocaleString() : ''}</span>
     </div>`;
   }).join('');
 }
@@ -671,16 +681,20 @@ function updateSidebarStagger(skillName) {
   const skill = classData.skills.find(s => s.name === skillName);
   if (!skill) return;
   const stag = getActiveStagger(skill);
-  const max = Math.max(...classData.skills.map(s => getActiveStagger(s)), 1);
-  // Find the sidebar item and update its stagger display
+  const activeVals = classData.skills.map(s => getActiveStagger(s)).filter(v => v != null);
+  const max = Math.max(...activeVals, 1);
   document.querySelectorAll('.skill-item').forEach(el => {
     const nameEl = el.querySelector('.skill-name');
     if (nameEl && nameEl.textContent === skillName) {
       const usageEl = el.querySelector('.skill-usage');
       if (usageEl) {
-        const ratio = stag / max;
-        usageEl.style.color = `rgb(45,${Math.max(100,Math.round(200*ratio))},${Math.max(80,Math.round(143 + (1-ratio)*-80))})`;
-        usageEl.textContent = stag.toLocaleString();
+        if (stag == null) {
+          usageEl.textContent = '';
+        } else {
+          const ratio = stag / max;
+          usageEl.style.color = `rgb(45,${Math.max(100,Math.round(200*ratio))},${Math.max(80,Math.round(143 + (1-ratio)*-80))})`;
+          usageEl.textContent = stag.toLocaleString();
+        }
       }
     }
   });
