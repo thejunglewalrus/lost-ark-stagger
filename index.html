@@ -277,7 +277,10 @@ async function init() {
     opt.textContent = c.name;
     sel.appendChild(opt);
   });
-  sel.addEventListener('change', () => { loadClass(sel.value); });
+  sel.addEventListener('change', () => {
+    try { localStorage.setItem('stagger_last_class', sel.value); } catch(e) {}
+    loadClass(sel.value);
+  });
 
   // Engraving selector
   document.getElementById('engravingSelect').addEventListener('change', updateEngravingLabels);
@@ -306,9 +309,12 @@ async function init() {
   });
   bSel.addEventListener('change', renderBossInfo);
 
-  // Load first class
-  // Default to Summoner for testing, fall back to first class
-  const defaultClass = sorted.find(c => c.bible_id === 'summoner') || sorted[0];
+  // Load last-selected class from localStorage, falling back to first class
+  let stored = null;
+  try { stored = localStorage.getItem('stagger_last_class'); } catch(e) {}
+  const defaultClass =
+    (stored && sorted.find(c => c.bible_id === stored)) ||
+    sorted[0];
   if (defaultClass) { sel.value = defaultClass.bible_id; loadClass(defaultClass.bible_id); }
   renderBossInfo();
 }
