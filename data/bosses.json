@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Brelshaza, Ember in the Ashes",
+    "paralyzation_max": 60000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Armoche, Sentinel of the Abyss",
+    "paralyzation_max": 60000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Abyssal Afterimage",
+    "paralyzation_max": 55000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Abyss Lord Kazeros",
+    "paralyzation_max": 50000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Covetous Master Echidna",
+    "paralyzation_max": 45000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Abyss-Consumed Armen",
+    "paralyzation_max": 30000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Archdemon Kazeros",
+    "paralyzation_max": 10000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Death Incarnate Kazeros",
+    "paralyzation_max": 10000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  },
+  {
+    "name": "Kazeros, Splinter of Order",
+    "paralyzation_max": 10000,
+    "stagger_duration_min": 5000,
+    "stagger_duration_max": 6000,
+    "immunity_after": 7000
+  }
+]

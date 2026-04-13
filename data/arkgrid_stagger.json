@@ -1,0 +1,202 @@
+[
+  {
+    "pk": 3155600,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155600/>/100/>%</FONT>.",
+    "option0_type": 0,
+    "option0_index": 0,
+    "option0_value": 0,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 200
+  },
+  {
+    "pk": 3155700,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155700/>/100/>%</FONT>. On a successful attack, the target takes +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_SKILLBUFF ValueB 608263000/>/100 - <$TABLE_SKILLBUFF ValueB 608261000/>/100/>%</FONT> Crit Damage from you and party members for <FONT COLOR='#ffff99'><$CALC %1 <$TABLE_SKILLBUFF Duration 608263000/>/1000/>s</FONT>.",
+    "option0_type": 3,
+    "option0_index": 608261000,
+    "option0_value": 5,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 400
+  },
+  {
+    "pk": 3155800,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155800/>/100/>%</FONT>. On a successful attack, the target takes +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_SKILLBUFF ValueB 608264000/>/100 - <$TABLE_SKILLBUFF ValueB 608261000/>/100/>%</FONT> Crit Damage from you and party members for <FONT COLOR='#ffff99'><$CALC %1 <$TABLE_SKILLBUFF Duration 608264000/>/1000/>s</FONT>.",
+    "option0_type": 3,
+    "option0_index": 608261000,
+    "option0_value": 10,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 600
+  },
+  {
+    "pk": 3155900,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155900/>/100/>%</FONT>.",
+    "option0_type": 0,
+    "option0_index": 0,
+    "option0_value": 0,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 60
+  },
+  {
+    "pk": 3155901,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155900/>/100/>%</FONT>.",
+    "option0_type": 0,
+    "option0_index": 0,
+    "option0_value": 0,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 60
+  },
+  {
+    "pk": 3155902,
+    "desc": "Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %2 <$TABLE_ARKGRIDCOREOPTION AddonOptionValue1 3155900/>/100/>%</FONT>.",
+    "option0_type": 0,
+    "option0_index": 0,
+    "option0_value": 0,
+    "option1_type": 2,
+    "option1_index": 0,
+    "option1_value": 60
+  },
+  {
+    "pk": 3182600,
+    "desc": "<FONT COLOR='#bf9ef6'>Destiny</FONT> activation resets Vortex Gravity cooldown. Stagger Damage from Vortex Gravity -<FONT COLOR='#ff9999'><$CALC_COMMA %1 <$TABLE_AddonSkillFeature Param1 3182600/>/>%</FONT>.",
+    "option0_type": 28,
+    "option0_index": 3182600,
+    "option0_value": 1,
+    "option1_type": 32,
+    "option1_index": 3182600,
+    "option1_value": 0
+  },
+  {
+    "pk": 3207200,
+    "desc": "With Stagger Command, Maririn inflicts Stagger [High] but Stagger Command Damage -<FONT COLOR='#ff9999'><$CALC_COMMA %1 <$TABLE_AddonSkillFeature Param1 3207201/>/>%</FONT>. Maririn's Basic Attack Damage +<FONT COLOR='#99ff99'><$CALC_COMMA %1 <$TABLE_AddonSkillFeature Param1 3207200/>/>%</FONT>.",
+    "option0_type": 32,
+    "option0_index": 3207200,
+    "option0_value": 0,
+    "option1_type": 32,
+    "option1_index": 3207201,
+    "option1_value": 0
+  },
+  {
+    "pk": 3207300,
+    "desc": "With Stagger Command, Maririn inflicts Stagger [High] but Stagger Command Damage -<FONT COLOR='#ff9999'><$CALC_COMMA %1 <$TABLE_AddonSkillFeature Param1 3207201/>/>%</FONT>. Maririn's Basic Attack Damage +<FONT COLOR='#99ff99'><$CALC_COMMA %1 <$TABLE_AddonSkillFeature Param1 3207300/>/>%</FONT>.",
+    "option0_type": 32,
+    "option0_index": 3207300,
+    "option0_value": 0,
+    "option1_type": 32,
+    "option1_index": 3207201,
+    "option1_value": 0
+  },
+  {
+    "pk": 3211600,
+    "desc": "On <FONT COLOR='#bf9ef6'>Destiny</FONT> activation, gain the <FONT COLOR='#bf9ef6'>Destiny: Fortissimo</FONT> effect for <FONT COLOR='#ffff99'><$CALC_COMMA %1 <$TABLE_SKILLBUFF Duration 3211600/>/1000 />s</FONT>.\n<FONT COLOR='#bf9ef6'>Destiny: Fortissimo</FONT>: Stagger Damage to foes +<FONT COLOR='#99ff99'><$CALC_COMMA %1 <$TABLE_SKILLBUFF ValueA 3211600/>-100 />%</FONT>.",
+    "option0_type": 28,
+    "option0_index": 3211600,
+    "option0_value": 1,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3218000,
+    "desc": "Soundholic inflicts Stagger [Mid - High].",
+    "option0_type": 32,
+    "option0_index": 3218000,
+    "option0_value": 0,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3290100,
+    "desc": "Rifle Skill Stagger Damage +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param1 3290100/>/>%</FONT>. On <FONT COLOR='#bf9ef6'>Destiny</FONT> activation, gain the <FONT COLOR='#bf9ef6'>Destiny: Bloodhound</FONT> effect for <FONT COLOR='#ffff99'><$CALC %1 <$TABLE_SKILLBUFF Duration 3290100/>/1000 />s</FONT>.\n<FONT COLOR='#bf9ef6'>Destiny: Bloodhound</FONT>: Damage to foes +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_COMBATEFFECT Action0ArgA 3290100/>/100/>%</FONT>.",
+    "option0_type": 28,
+    "option0_index": 3290100,
+    "option0_value": 1,
+    "option1_type": 4,
+    "option1_index": 3290100,
+    "option1_value": 0
+  },
+  {
+    "pk": 3343700,
+    "desc": "Focus Skill Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param1 3343700/>/>%</FONT>. Damage +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_COMBATEFFECT Action0ArgA 3343700/>/100/>%</FONT>. MP Cost -<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param0 3343701/>/>%</FONT>.",
+    "option0_type": 32,
+    "option0_index": 3343700,
+    "option0_value": 0,
+    "option1_type": 4,
+    "option1_index": 3343700,
+    "option1_value": 0
+  },
+  {
+    "pk": 3343800,
+    "desc": "Focus Skill Stagger Damage Bonus +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param1 3343800/>/>%</FONT>. Damage +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_COMBATEFFECT Action0ArgA 3343800/>/100/>%</FONT>. MP Cost -<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param0 3343801/>/>%</FONT>.",
+    "option0_type": 32,
+    "option0_index": 3343800,
+    "option0_value": 0,
+    "option1_type": 4,
+    "option1_index": 3343800,
+    "option1_value": 0
+  },
+  {
+    "pk": 3347100,
+    "desc": "With Raging Dragon Slash's Quick Slash, Damage +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param1 3347100/>/>%</FONT>. Stagger Damage +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_ADDONSKILLFEATURE Param1 3347100/>/>%</FONT>.",
+    "option0_type": 32,
+    "option0_index": 3347100,
+    "option0_value": 0,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3361600,
+    "desc": "On <FONT COLOR='#bf9ef6'>Destiny</FONT> activation, gain the <FONT COLOR='#bf9ef6'>Destiny: Heavenly Agent</FONT> effect for <FONT COLOR='#ffff99'><$CALC %1 <$TABLE_SKILLBUFF Duration 3361600/>/1000/></FONT>s.\n<FONT COLOR='#bf9ef6'>Destiny: Heavenly Agent</FONT>: Stagger Damage to foes +<FONT COLOR='#99ff99'><$CALC %1 <$TABLE_SKILLBUFF ValueA 3361600/>-100/>%</FONT>.",
+    "option0_type": 28,
+    "option0_index": 3361600,
+    "option0_value": 1,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3368500,
+    "desc": "Increases Light of Judgment's Stagger Level to [Mid-High].",
+    "option0_type": 32,
+    "option0_index": 3368500,
+    "option0_value": 0,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3482600,
+    "desc": "On <FONT COLOR='#bf9ef6'>Destiny</FONT> activation, gain the <FONT COLOR='#bf9ef6'>Destiny: Light Carves Life</FONT> effect for <FONT COLOR='#ffff99'><$CALC_COMMA %1 <$TABLE_SKILLBUFF Duration 3482600/>/1000 />s</FONT>.\n<FONT COLOR='#bf9ef6'>Destiny: Light Carves Life</FONT>: Stagger Damage +<FONT COLOR='#99ff99'><$CALC_COMMA %1 <$TABLE_SKILLBUFF ValueA 3482600/>-100/>%</FONT>.",
+    "option0_type": 28,
+    "option0_index": 3482600,
+    "option0_value": 1,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3488000,
+    "desc": "Increases Circle of Truth Stagger Level to [Low].",
+    "option0_type": 32,
+    "option0_index": 3488000,
+    "option0_value": 0,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  },
+  {
+    "pk": 3488500,
+    "desc": "Increases Requiem Ash Stagger Level to [Max].",
+    "option0_type": 32,
+    "option0_index": 3488500,
+    "option0_value": 0,
+    "option1_type": 0,
+    "option1_index": 0,
+    "option1_value": 0
+  }
+]

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost Ark Stagger Tool</title>
+<style>
+:root { --bg:#141414; --surface-900:#1a1a1a; --surface-800:#222; --surface-950:#111;
+  --border:#2a2a2a; --text:#d4d4d4; --text2:#888; --accent:#20b2aa; --gold:#daa520;
+  --green:#2dc88f; --blue:#5b9bd5; --red:#e05555; --purple:#a855f7; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; min-height:100vh; font-size:14px; }
+
+/* Header */
+.header { background:var(--surface-900); border-bottom:1px solid var(--border); padding:12px 24px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.header h1 { font-size:1.1rem; font-weight:700; color:var(--text); }
+.header-controls { display:flex; gap:12px; align-items:center; }
+.header select { background:var(--surface-800); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:6px 10px; font-size:.85rem; }
+
+/* Tab bar */
+.tabs { background:var(--surface-950); border-bottom:1px solid var(--border); display:flex; gap:0; padding:0 24px; overflow-x:auto; }
+.tab { padding:10px 16px; font-size:.8rem; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; }
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--text); border-bottom-color:var(--accent); }
+
+/* Main layout — bible-style 3 column */
+.main { display:grid; grid-template-columns:280px 1fr 240px; min-height:calc(100vh - 90px); }
+@media(max-width:900px) { .main { grid-template-columns:1fr; } }
+
+/* Left: Skill list */
+.skill-list { background:var(--surface-900); border-right:1px solid var(--border); overflow-y:auto; max-height:calc(100vh - 90px); position:sticky; top:90px; }
+.skill-item { display:flex; align-items:center; gap:8px; padding:8px 12px; cursor:pointer; transition:background .15s; border-bottom:1px solid var(--surface-950); }
+.skill-item:hover { background:var(--surface-800); }
+.skill-item.active { background:var(--surface-800); border-left:3px solid var(--accent); }
+.skill-item.dimmed { opacity:.5; }
+.skill-icon { width:28px; height:28px; border-radius:4px; background:var(--surface-800); flex-shrink:0; overflow:hidden; }
+.skill-icon img { width:100%; height:100%; border-radius:4px; object-fit:cover; }
+.skill-name { flex:1; font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.skill-usage { text-align:right; font-size:.8rem; font-weight:600; min-width:50px; }
+.skill-badges { display:flex; gap:3px; }
+.badge { font-size:.6rem; padding:1px 5px; border-radius:3px; font-weight:600; line-height:1.4; }
+.badge-syn { background:rgba(218,165,32,.15); color:var(--gold); }
+.badge-awk { background:rgba(168,85,247,.15); color:var(--purple); }
+.badge-ctr { background:rgba(91,155,213,.15); color:var(--blue); }
+.badge-stance { background:rgba(255,255,255,.05); color:var(--text2); }
+.badge-summon { background:rgba(168,85,247,.15); color:var(--purple); }
+.badge-hold { background:rgba(218,165,32,.15); color:var(--gold); }
+.badge-chain { background:rgba(91,155,213,.15); color:var(--blue); }
+
+/* Center: Detail panel */
+.detail { padding:20px 24px; overflow-y:auto; max-height:calc(100vh - 90px); }
+.detail-empty { display:flex; align-items:center; justify-content:center; height:300px; color:var(--text2); font-size:.9rem; }
+.section { margin-bottom:20px; }
+.section-header { display:flex; align-items:center; gap:8px; padding:8px 12px; background:rgba(0,0,0,.1); font-weight:700; font-size:.85rem; border-radius:4px 4px 0 0; border-bottom:1px solid var(--border); }
+
+/* Stagger overview — big number + secondary stats */
+.stagger-overview { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-radius:6px; overflow:hidden; margin-bottom:16px; }
+.stagger-hero { background:var(--surface-900); padding:20px; text-align:center; }
+.stagger-hero .val { font-size:2.4rem; font-weight:800; color:var(--accent); line-height:1.1; }
+.stagger-hero .lbl { font-size:.7rem; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-top:4px; }
+.stagger-secondary { display:grid; grid-template-rows:1fr 1fr; gap:1px; background:var(--border); }
+.stagger-stat { background:var(--surface-900); padding:10px 14px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+.stagger-stat .val { font-size:1.1rem; font-weight:700; color:var(--accent); }
+.stagger-stat .lbl { font-size:.65rem; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
+
+/* Collapsible sections */
+.section-header { display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; }
+.section-header .collapse-btn { font-size:.7rem; color:var(--text2); background:none; border:1px solid var(--border); border-radius:4px; padding:2px 8px; cursor:pointer; }
+.section-header .collapse-btn:hover { color:var(--text); border-color:var(--text2); }
+.section-body { overflow:hidden; transition:max-height .3s ease, opacity .2s ease; }
+.section-body.collapsed { max-height:0!important; opacity:0; padding:0; margin:0; }
+
+/* Hit stages (like tripod rows in bible) */
+.stage-list { background:var(--surface-900); border-radius:0 0 6px 6px; overflow:hidden; }
+.stage-row { display:flex; align-items:center; padding:8px 12px; gap:10px; border-bottom:1px solid var(--surface-950); }
+.stage-row:last-child { border-bottom:none; }
+.stage-label { font-size:.75rem; color:var(--text2); width:55px; flex-shrink:0; }
+.stage-bar-wrap { flex:1; }
+.stage-bar-bg { background:var(--surface-950); height:18px; border-radius:3px; overflow:hidden; position:relative; }
+.stage-bar { height:100%; border-radius:3px; display:flex; align-items:center; padding-left:8px; font-size:.7rem; color:rgba(255,255,255,.85); font-weight:600; transition:width .4s ease; }
+.stage-value { font-size:.8rem; font-weight:600; color:var(--accent); min-width:55px; text-align:right; }
+
+/* Tripod mods (like bible tripod rows) */
+/* Tripod rows — bible-style horizontal cards */
+.tripod-tier { display:flex; gap:1px; margin-bottom:1px; }
+.tripod-card { position:relative; display:flex; flex:1; align-items:center; padding:8px 10px; background:var(--surface-900); cursor:pointer; transition:opacity .15s; }
+.tripod-card:not(.selected) { opacity:.4; }
+.tripod-card.selected { opacity:1; }
+.tripod-card.unspec { opacity:.6; }
+.tripod-card .tripod-bg { position:absolute; inset:0; opacity:.25; transition:background .2s; }
+.tripod-card .tripod-icon { width:32px; height:32px; border-radius:4px; margin-right:8px; flex-shrink:0; background:var(--surface-800); }
+.tripod-card .tripod-icon img { width:100%; height:100%; border-radius:4px; }
+.tripod-card .tripod-info { display:flex; flex-direction:column; flex:1; min-width:0; }
+.tripod-card .tripod-name { font-size:.75rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tripod-card .tripod-delta { font-size:.8rem; font-weight:600; }
+.tripod-card .tripod-hits { font-size:.65rem; color:var(--text2); }
+.tripod-change.positive { color:var(--green); }
+.tripod-change.negative { color:var(--red); }
+
+/* Synergy callout */
+.synergy-box { padding:10px 14px; margin-bottom:12px; background:rgba(218,165,32,.06); border:1px solid rgba(218,165,32,.2); border-radius:6px; font-size:.8rem; color:var(--gold); display:flex; align-items:center; gap:8px; }
+
+/* Right: Sidebar/Filters */
+.sidebar { background:var(--surface-900); border-left:1px solid var(--border); padding:16px; overflow-y:auto; max-height:calc(100vh - 90px); position:sticky; top:90px; }
+.sidebar h3 { font-size:.75rem; color:var(--text2); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.sidebar-stat { display:flex; justify-content:space-between; padding:6px 0; font-size:.8rem; border-bottom:1px solid var(--surface-950); }
+.sidebar-stat .val { font-weight:600; color:var(--accent); }
+.filter-group { margin-bottom:16px; }
+.filter-group label { display:flex; align-items:center; gap:6px; font-size:.8rem; color:var(--text2); cursor:pointer; padding:3px 0; }
+.filter-group input[type=checkbox] { accent-color:var(--accent); }
+.party-btns { display:flex; gap:4px; margin-top:4px; }
+.party-btn { padding:4px 12px; font-size:.8rem; border:1px solid var(--border); background:var(--surface-800); color:var(--text2); border-radius:4px; cursor:pointer; }
+.party-btn.active { background:var(--accent); color:#000; border-color:var(--accent); font-weight:600; }
+
+/* Boss section in sidebar */
+.boss-select { width:100%; background:var(--surface-800); border:1px solid var(--border); color:var(--text); border-radius:4px; padding:6px 8px; font-size:.8rem; margin-bottom:8px; }
+.boss-info { font-size:.8rem; }
+.boss-info .gauge { color:var(--gold); font-weight:700; font-size:1rem; }
+
+/* Community report footer */
+.report-footer {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:var(--surface-900); border-top:1px solid var(--border);
+  padding:8px 16px; display:flex; justify-content:center; align-items:center; gap:12px;
+  font-size:.8rem; color:var(--text2);
+}
+.report-footer a {
+  color:var(--accent); text-decoration:none; font-weight:600;
+  padding:4px 10px; border:1px solid var(--accent); border-radius:4px;
+  transition:background .15s;
+}
+.report-footer a:hover { background:rgba(32,178,170,.15); }
+
+/* Add bottom padding so footer doesn't cover content */
+body { padding-bottom:44px; }
+.skill-list, .sidebar { max-height:calc(100vh - 90px - 44px) !important; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>&#x2694; Stagger Tool</h1>
+  <div class="header-controls">
+    <select id="classSelect"></select>
+    <select id="engravingSelect">
+      <option value="0">Engraving 1</option>
+      <option value="1">Engraving 2</option>
+    </select>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-tab="class">Class Loadout</div>
+  <div class="tab" data-tab="compare">Class Comparison</div>
+  <div class="tab" data-tab="boss">Boss Reference</div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <!-- Left: Skill List -->
+  <div class="skill-list" id="skillList"></div>
+
+  <!-- Center: Detail -->
+  <div class="detail" id="detailPanel">
+    <div class="detail-empty">Select a skill to view stagger breakdown</div>
+  </div>
+
+  <!-- Right: Sidebar -->
+  <div class="sidebar">
+    <h3>Class Summary</h3>
+    <div id="classSummary"></div>
+
+    <div class="filter-group" style="margin-top:16px">
+      <h3>Filters</h3>
+      <label><input type="checkbox" id="filterAwk" checked> Awakening Skills</label>
+      <label><input type="checkbox" id="filterCtr" checked> Counter Skills</label>
+    </div>
+
+    <div class="filter-group">
+      <h3>Party Size</h3>
+      <div class="party-btns">
+        <div class="party-btn active" data-size="4">4 Players</div>
+        <div class="party-btn" data-size="8">8 Players</div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <h3>Boss Threshold</h3>
+      <select class="boss-select" id="bossSelect"></select>
+      <div class="boss-info" id="bossInfo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer: Community stagger reports -->
+<div class="report-footer">
+  <span>Found an incorrect stagger value or tripod modifier?</span>
+  <a id="reportLink" href="https://docs.google.com/forms/d/e/1FAIpQLSd2-XyaTYvsdTyJBzpFUNMxq1itcKEiq_nRRjsbYDDVqob9-w/viewform?usp=sharing&ouid=103554270639158269794" target="_blank" rel="noopener">
+    Report it &rarr;
+  </a>
+</div>
+
+<script>
+let classData = null;
+let allClasses = null;
+let bossData = null;
+let selectedSkill = null;
+let partySize = 4;
+
+// Compute the default tripod slot per tier from bible popularity data
+function getDefaultTripodSlots(skill) {
+  const defaults = {};
+  if (!skill.tripod_tiers) return defaults;
+  skill.tripod_tiers.forEach(tier => {
+    let slot = tier.options[0]?.slot;
+    if (skill.all_tripods) {
+      const bibleTier = skill.all_tripods.filter(t => t.tier === tier.tier);
+      if (bibleTier.length) {
+        const topBible = bibleTier.reduce((a, b) => a.pct > b.pct ? a : b);
+        const matchIdx = tier.options.findIndex(o => o.name === topBible.name);
+        if (matchIdx >= 0) slot = tier.options[matchIdx].slot;
+      }
+    }
+    if (slot != null) defaults[tier.tier] = slot;
+  });
+  return defaults;
+}
+
+function getActiveStagger(skill) {
+  let stag = skill.base_stagger;
+  if (!skill.tripod_tiers) return stag;
+  // Use explicit user selection if present, otherwise fall back to bible-popular defaults
+  const userSel = window._selectedTripods && window._selectedTripods[skill.name];
+  const sel = userSel || getDefaultTripodSlots(skill);
+  skill.tripod_tiers.forEach(tier => {
+    if (sel[tier.tier] != null) {
+      const opt = tier.options.find(o => o.slot === sel[tier.tier]);
+      if (opt) stag += opt.stagger_delta;
+    }
+  });
+  return stag;
+}
+
+async function init() {
+  const [classResp, bossResp] = await Promise.all([
+    fetch('data/classes.json'), fetch('data/bosses.json')
+  ]);
+  allClasses = await classResp.json();
+  bossData = await bossResp.json();
+
+  // Populate class selector
+  const sel = document.getElementById('classSelect');
+  const sorted = Object.values(allClasses).sort((a,b) => a.name.localeCompare(b.name));
+  sorted.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.bible_id;
+    opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => { loadClass(sel.value); });
+
+  // Engraving selector
+  document.getElementById('engravingSelect').addEventListener('change', updateEngravingLabels);
+
+  // Filters
+  document.getElementById('filterAwk').addEventListener('change', renderSkillList);
+  document.getElementById('filterCtr').addEventListener('change', renderSkillList);
+
+  // Party size
+  document.querySelectorAll('.party-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.party-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      partySize = parseInt(btn.dataset.size);
+      renderBossInfo();
+    });
+  });
+
+  // Boss selector
+  const bSel = document.getElementById('bossSelect');
+  bossData.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b.name;
+    opt.textContent = `${b.name} (${b.paralyzation_max.toLocaleString()})`;
+    bSel.appendChild(opt);
+  });
+  bSel.addEventListener('change', renderBossInfo);
+
+  // Load first class
+  // Default to Summoner for testing, fall back to first class
+  const defaultClass = sorted.find(c => c.bible_id === 'summoner') || sorted[0];
+  if (defaultClass) { sel.value = defaultClass.bible_id; loadClass(defaultClass.bible_id); }
+  renderBossInfo();
+}
+
+function updateEngravingLabels() {
+  if (!classData) return;
+  const sel = document.getElementById('engravingSelect');
+  sel.options[0].textContent = classData.engravings[0];
+  sel.options[1].textContent = classData.engravings[1];
+}
+
+async function loadClass(bibleId) {
+  const resp = await fetch(`data/${bibleId}.json`);
+  classData = await resp.json();
+  updateEngravingLabels();
+  selectedSkill = null;
+  renderSkillList();
+  renderSidebar();
+  document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">Select a skill to view stagger breakdown</div>';
+}
+
+function renderSkillList() {
+  const list = document.getElementById('skillList');
+  const showAwk = document.getElementById('filterAwk').checked;
+  const showCtr = document.getElementById('filterCtr').checked;
+  const skills = classData.skills;
+  const max = Math.max(...skills.map(s => getActiveStagger(s)), 1);
+
+  list.innerHTML = skills.map(s => {
+    const hidden = (!showAwk && s.is_awakening) || (!showCtr && s.is_counter);
+    const stag = getActiveStagger(s);
+    const ratio = stag / max;
+    const color = ratio > 0.7 ? 'rgb(45,200,143)' : ratio > 0.4 ? 'rgb(200,170,50)' : 'rgb(120,120,120)';
+    // Color the stagger value like bible colors usage% (green gradient)
+    const g = Math.round(143 + (1 - ratio) * -80);
+    const staggerColor = `rgb(45,${Math.max(100,Math.round(200*ratio))},${Math.max(80,g)})`;
+    let badges = '';
+    if (s.has_stagger_synergy) badges += '<span class="badge badge-syn">SYN</span>';
+    if (s.is_awakening) badges += '<span class="badge badge-awk">AWK</span>';
+    if (s.is_counter) badges += '<span class="badge badge-ctr">CTR</span>';
+    if (s.stance) badges += `<span class="badge badge-stance">${s.stance}</span>`;
+    if (s.chain_info?.type === 'summon') badges += '<span class="badge badge-summon">SUMMON</span>';
+    if (s.chain_info?.type === 'hold_pz') badges += '<span class="badge badge-hold">PZ</span>';
+    if (s.chain_info?.type === 'hold') badges += '<span class="badge badge-stance">HOLD</span>';
+    if (s.chain_info?.type === 'multi_press') badges += '<span class="badge badge-chain">CHAIN</span>';
+    if (s.chain_info?.ground_effect) badges += '<span class="badge" style="background:rgba(45,200,143,.15);color:var(--green)">GROUND</span>';
+
+    const iconHtml = s.icon_url
+      ? `<img src="${s.icon_url}" alt="${s.name}">`
+      : '';
+
+    const displayName = s.name.startsWith('Brawl King Twelve Forms: ')
+      ? s.name.slice('Brawl King Twelve Forms: '.length)
+      : s.name;
+    return `<div class="skill-item${hidden ? ' dimmed' : ''}${selectedSkill === s.name ? ' active' : ''}"
+                title="${s.name.replace(/"/g, '&quot;')}"
+                onclick="showSkill('${s.name.replace(/'/g,"\\'")}')" ${hidden ? 'style="display:none"' : ''}>
+      <div class="skill-icon">${iconHtml}</div>
+      <span class="skill-name">${displayName}</span>
+      <div class="skill-badges">${badges}</div>
+      <span class="skill-usage" style="color:${staggerColor}">${stag.toLocaleString()}</span>
+    </div>`;
+  }).join('');
+}
+
+function showSkill(name) {
+  selectedSkill = name;
+  const skill = classData.skills.find(s => s.name === name);
+  if (!skill) return;
+
+  // Highlight active
+  document.querySelectorAll('.skill-item').forEach(el => el.classList.remove('active'));
+  event?.target?.closest?.('.skill-item')?.classList.add('active');
+
+  const max = Math.max(...skill.stages.map(s => s.stagger), 1);
+  const stageColors = ['#5b9bd5', '#5b9bd5', '#2dc88f', '#2dc88f', '#daa520', '#daa520', '#e05555', '#e05555'];
+
+  // Pre-compute tripod-modified values for the overview
+  let activeStagger = skill.base_stagger;
+  let activeHits = skill.hit_count;
+  const skillName = skill.name;
+  if (!window._selectedTripods) window._selectedTripods = {};
+  if (window._selectedTripods[skillName] && skill.tripod_tiers) {
+    const sel = window._selectedTripods[skillName];
+    skill.tripod_tiers.forEach(tier => {
+      if (sel[tier.tier] != null) {
+        const selected = tier.options.find(o => o.slot === sel[tier.tier]);
+        if (selected) {
+          activeStagger += selected.stagger_delta;
+          activeHits += selected.hits_delta;
+        }
+      }
+    });
+  }
+  const activeSps = skill.cooldown_ms > 0 ? Math.round(activeStagger / (skill.cooldown_ms / 1000)) : 0;
+
+  let html = '';
+
+  // Synergy callout
+  if (skill.has_stagger_synergy) {
+    html += '<div class="synergy-box">&#x1f504; <b>Stagger Synergy</b> &mdash; Debuffs the boss to take increased stagger damage</div>';
+  }
+
+  // Chain info callout
+  const ci = skill.chain_info;
+  if (ci) {
+    if (ci.type === 'multi_press') {
+      html += `<div style="padding:8px 12px;margin-bottom:12px;background:rgba(91,155,213,.08);border:1px solid rgba(91,155,213,.2);border-radius:6px;font-size:.8rem;color:var(--blue)">
+        &#x1f517; <b>Chain Skill</b> &mdash; ${ci.presses.length} presses, total ${ci.total_stagger.toLocaleString()} stagger
+      </div>`;
+    } else if (ci.type === 'hold_pz') {
+      html += `<div style="padding:8px 12px;margin-bottom:12px;background:rgba(218,165,32,.08);border:1px solid rgba(218,165,32,.2);border-radius:6px;font-size:.8rem;color:var(--gold)">
+        &#x23F3; <b>Hold (Perfect Zone)</b> &mdash; PZ release: ${ci.pz_total.toLocaleString()} stagger
+        <span style="color:var(--text2);margin-left:8px">(fail: ${ci.fail_total.toLocaleString()})</span>
+      </div>`;
+    } else if (ci.type === 'hold') {
+      html += `<div style="padding:8px 12px;margin-bottom:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;font-size:.8rem;color:var(--text2)">
+        &#x23F3; <b>Hold</b> &mdash; ${ci.tick} stagger per tick &times; ${ci.estimated_ticks} ticks = ${ci.pz_total.toLocaleString()} stagger
+      </div>`;
+    } else if (ci.type === 'summon') {
+      html += `<div style="padding:8px 12px;margin-bottom:12px;background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.2);border-radius:6px;font-size:.8rem;color:var(--purple)">
+        &#x1f43b; <b>Summon</b> &mdash; Command: ${ci.command_stagger.toLocaleString()} stagger (${ci.command_name}, ${(ci.command_cd/1000).toFixed(0)}s CD)
+        ${ci.auto_attack_stagger > 0 ? `<br><span style="color:var(--text2)">Auto-attack: ${ci.auto_attack_stagger}/hit while active</span>` : ''}
+        ${ci.summon_cast_stagger > 0 ? `<br><span style="color:var(--text2)">On summon: ${ci.summon_cast_stagger} stagger</span>` : ''}
+      </div>`;
+    }
+  }
+
+  // Stance tag
+  if (skill.stance) {
+    html += `<div style="padding:6px 12px;margin-bottom:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;font-size:.8rem;color:var(--text2)">
+      &#x2694; <b>${skill.stance}</b> only
+    </div>`;
+  }
+
+  // Ground effect callout
+  const ge = ci?.ground_effect;
+  if (ge) {
+    const tickRate = ge.tick_interval_ms > 0 ? `every ${(ge.tick_interval_ms/1000).toFixed(1)}s` : '';
+    const dur = ge.duration_ms > 0 ? `${(ge.duration_ms/1000).toFixed(1)}s duration` : '';
+    html += `<div style="padding:8px 12px;margin-bottom:12px;background:rgba(45,200,143,.06);border:1px solid rgba(45,200,143,.2);border-radius:6px;font-size:.8rem;color:var(--green)">
+      &#x1f4a7; <b>Ground Effect</b> &mdash; ${ge.stagger_per_tick} stagger/tick ${tickRate} ${dur} = ${ge.ground_total.toLocaleString()} total
+    </div>`;
+  }
+
+  // Stagger overview — big hero number + secondary stats
+  const staggerLabel = ci?.type === 'hold_pz' ? ' (PZ)' : ci?.type === 'hold' ? ' (Full Hold)' : ci?.type === 'multi_press' ? ' (Full Chain)' : ci?.type === 'summon' ? ' (Command)' : '';
+  html += `<div class="stagger-overview">
+    <div class="stagger-hero"><div class="val" id="heroStagger">${activeStagger.toLocaleString()}</div><div class="lbl">Total Stagger${staggerLabel}</div></div>
+    <div class="stagger-secondary">
+      <div class="stagger-stat"><div class="val" id="heroHits">${activeHits}</div><div class="lbl">Total Hits</div></div>
+      <div class="stagger-stat"><div class="val" id="heroSps">${activeSps}/s</div><div class="lbl">Stagger / Sec</div></div>
+    </div>
+  </div>`;
+
+  // Multi-press breakdown
+  if (ci?.type === 'multi_press') {
+    html += '<div class="section"><div class="section-header" onclick="toggleSection(\'chainPresses\')">Chain Presses<button class="collapse-btn" id="chainPressesBtn">Hide</button></div>';
+    html += '<div class="section-body" id="chainPressesBody" style="max-height:300px"><div class="stage-list">';
+    const pressMax = Math.max(...ci.presses.map(p => p.stagger), 1);
+    ci.presses.forEach((p, i) => {
+      const pct = (p.stagger / pressMax * 100).toFixed(1);
+      const color = i === 0 ? '#5b9bd5' : i === 1 ? '#2dc88f' : '#daa520';
+      html += `<div class="stage-row">
+        <span class="stage-label">Press ${i + 1}</span>
+        <div class="stage-bar-wrap">
+          <div class="stage-bar-bg"><div class="stage-bar" style="width:${pct}%;background:${color}">${p.stagger.toLocaleString()}</div></div>
+        </div>
+        <span class="stage-value">${p.stagger.toLocaleString()}</span>
+      </div>`;
+    });
+    html += '</div></div></div>';
+  }
+
+  // Hold/PZ breakdown
+  if ((ci?.type === 'hold_pz' || ci?.type === 'hold') && (ci.burst > 0 || ci.tick > 0)) {
+    html += '<div class="section"><div class="section-header" onclick="toggleSection(\'holdBreakdown\')">Hold Breakdown<button class="collapse-btn" id="holdBreakdownBtn">Hide</button></div>';
+    html += '<div class="section-body" id="holdBreakdownBody" style="max-height:300px"><div class="stage-list">';
+    if (ci.opener > 0) {
+      html += `<div class="stage-row"><span class="stage-label">Opener</span><div class="stage-bar-wrap" style="font-size:.85rem">${ci.opener} stagger (1 hit)</div></div>`;
+    }
+    html += `<div class="stage-row"><span class="stage-label">Per Tick</span><div class="stage-bar-wrap" style="font-size:.85rem">${ci.tick} stagger (repeats during hold)</div></div>`;
+    if (ci.burst > 0) {
+      html += `<div class="stage-row"><span class="stage-label">PZ Burst</span><div class="stage-bar-wrap" style="font-size:.85rem;color:var(--gold)">${ci.burst} stagger (on perfect zone release)</div></div>`;
+      html += `<div class="stage-row" style="border-top:1px solid var(--border)"><span class="stage-label" style="color:var(--text2)">Fail</span><div class="stage-bar-wrap" style="font-size:.85rem;color:var(--text2)">${ci.fail_total} stagger (no burst, ticks only)</div></div>`;
+    }
+    html += '</div></div></div>';
+  }
+
+  // Interactive tripod section — bible-style horizontal cards
+  if (skill.tripod_tiers && skill.tripod_tiers.length > 0) {
+    const tierColors = ['91,155,213', '45,200,143', '218,165,32'];
+    const tierHex = ['#5b9bd5', '#2dc88f', '#daa520'];
+
+    // Initialize selected tripods if not yet done — use bible-popular defaults
+    if (!window._selectedTripods[skillName]) {
+      window._selectedTripods[skillName] = getDefaultTripodSlots(skill);
+      activeStagger = skill.base_stagger;
+      activeHits = skill.hit_count;
+      skill.tripod_tiers.forEach(tier => {
+        const s = window._selectedTripods[skillName][tier.tier];
+        if (s != null) {
+          const sel = tier.options.find(o => o.slot === s);
+          if (sel) { activeStagger += sel.stagger_delta; activeHits += sel.hits_delta; }
+        }
+      });
+    }
+    const sel = window._selectedTripods[skillName];
+
+    html += '<div class="section"><div class="section-header">Skill Tripods</div>';
+    skill.tripod_tiers.forEach((tier, ti) => {
+      const rgb = tierColors[ti];
+      const hex = tierHex[ti];
+      const bibleTier = (skill.all_tripods || []).filter(t => t.tier === tier.tier);
+      bibleTier.sort((a, b) => b.pct - a.pct);
+
+      html += '<div class="tripod-tier">';
+      tier.options.forEach((opt, oi) => {
+        const tierHasSelection = sel[tier.tier] != null;
+        const isSelected = tierHasSelection && sel[tier.tier] === opt.slot;
+        const bibleMatch = bibleTier.find(b => b.name === opt.name) || bibleTier[oi];
+
+        // Background tint: green if positive stagger, red if negative, neutral if zero
+        let bgColor;
+        if (opt.stagger_delta > 0) bgColor = `rgb(45,200,143)`;
+        else if (opt.stagger_delta < 0) bgColor = `rgb(255,133,169)`;
+        else bgColor = `rgb(${rgb})`;
+
+        // Delta display
+        let deltaHtml = '';
+        if (opt.stagger_delta !== 0) {
+          const sign = opt.stagger_delta > 0 ? '+' : '';
+          const cls = opt.stagger_delta >= 0 ? 'positive' : 'negative';
+          deltaHtml = `<span class="tripod-delta tripod-change ${cls}">${sign}${opt.stagger_delta.toLocaleString()}</span>`;
+        } else {
+          deltaHtml = `<span class="tripod-delta" style="color:var(--text2)">—</span>`;
+        }
+
+        // Hits delta
+        let hitsHtml = '';
+        if (opt.hits_delta !== 0) {
+          const hSign = opt.hits_delta > 0 ? '+' : '';
+          hitsHtml = `<span class="tripod-hits">${hSign}${opt.hits_delta} hits</span>`;
+        }
+
+        const iconSrc = bibleMatch?.icon || '';
+        const displayName = opt.name || bibleMatch?.name || `Option ${oi + 1}`;
+
+        const cardClass = isSelected ? ' selected' : (!tierHasSelection ? ' unspec' : '');
+        html += `<div class="tripod-card${cardClass}"
+                      onclick="selectTripod('${skillName.replace(/'/g,"\\'")}',${tier.tier},${opt.slot})">
+          <div class="tripod-bg" style="background-color:${bgColor}"></div>
+          <div class="tripod-icon">${iconSrc ? `<img src="${iconSrc}" alt="${displayName}">` : ''}</div>
+          <div class="tripod-info">
+            <span class="tripod-name">${displayName}</span>
+            ${deltaHtml}
+            ${hitsHtml}
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Hit Stages — collapsible
+  html += `<div class="section">
+    <div class="section-header" onclick="toggleSection('hitStages')">
+      Hit Stages
+      <button class="collapse-btn" id="hitStagesBtn">Hide</button>
+    </div>
+    <div class="section-body" id="hitStagesBody" style="max-height:500px">
+      <div class="stage-list">`;
+  skill.stages.forEach((st, i) => {
+    const pct = (st.stagger / max * 100).toFixed(1);
+    const color = stageColors[i % stageColors.length];
+    html += `<div class="stage-row">
+      <span class="stage-label">Stage ${i + 1}</span>
+      <div class="stage-bar-wrap">
+        <div class="stage-bar-bg"><div class="stage-bar" style="width:${pct}%;background:${color}">${st.per_hit.toLocaleString()} &times; ${st.hits}</div></div>
+      </div>
+      <span class="stage-value">${st.stagger.toLocaleString()}</span>
+    </div>`;
+  });
+  html += '</div></div></div>';
+
+  // Skill Info — collapsible
+  html += `<div class="section">
+    <div class="section-header" onclick="toggleSection('skillInfo')">
+      Skill Info
+      <button class="collapse-btn" id="skillInfoBtn">Hide</button>
+    </div>
+    <div class="section-body" id="skillInfoBody" style="max-height:200px">
+      <div class="stage-list">
+        <div class="stage-row"><span class="stage-label">Cooldown</span><div class="stage-bar-wrap" style="font-size:.85rem">${(skill.cooldown_ms / 1000).toFixed(0)}s</div></div>
+        <div class="stage-row"><span class="stage-label">Type</span><div class="stage-bar-wrap" style="font-size:.85rem">${
+          skill.is_awakening ? 'Awakening' :
+          skill.is_counter ? 'Counter' :
+          skill.chain_info?.type === 'hold_pz' ? 'Holding (Perfect Zone)' :
+          skill.chain_info?.type === 'hold' ? 'Holding' :
+          skill.chain_info?.type === 'multi_press' ? 'Chain' :
+          skill.chain_info?.type === 'summon' ? 'Summon' :
+          skill.stance ? skill.stance : 'Normal'
+        }</div></div>
+        <div class="stage-row"><span class="stage-label">Base Stagger</span><div class="stage-bar-wrap" style="font-size:.85rem">${skill.base_stagger.toLocaleString()} ${
+          skill.stagger_source?.startsWith('encounter') ? '<span style="color:var(--green);font-size:.7rem">(encounter verified)</span>' :
+          skill.stagger_source === 'verified' ? '<span style="color:var(--gold);font-size:.7rem">(manually verified)</span>' :
+          '<span style="color:var(--text2);font-size:.7rem">(estimated from DB)</span>'
+        }</div></div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('detailPanel').innerHTML = html;
+}
+
+function renderSidebar() {
+  const d = classData;
+  const synCount = d.skills.filter(s => s.has_stagger_synergy).length;
+  const nonAwk = d.skills.filter(s => !s.is_awakening);
+  const top8 = nonAwk.slice(0, 8);
+  const top8Total = top8.reduce((a, s) => a + s.base_stagger, 0);
+  const top8Sps = top8.reduce((a, s) => a + s.stagger_per_second, 0);
+
+  document.getElementById('classSummary').innerHTML = `
+    <div class="sidebar-stat"><span>Skills w/ Stagger</span><span class="val">${d.total_skills_with_stagger}</span></div>
+    <div class="sidebar-stat"><span>Total Base Stagger</span><span class="val">${d.total_base_stagger.toLocaleString()}</span></div>
+    <div class="sidebar-stat"><span>Sum Stagger/sec</span><span class="val">${Math.round(d.avg_stagger_per_second).toLocaleString()}</span></div>
+    <div class="sidebar-stat"><span>Synergy Skills</span><span class="val">${synCount}</span></div>
+    <div style="margin-top:12px;padding-top:8px;border-top:1px solid var(--border)">
+      <div style="font-size:.7rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Top 8 Skills</div>
+      <div class="sidebar-stat"><span>Combined Stagger</span><span class="val">${top8Total.toLocaleString()}</span></div>
+      <div class="sidebar-stat"><span>Combined /sec</span><span class="val">${Math.round(top8Sps).toLocaleString()}</span></div>
+    </div>`;
+
+  renderBossInfo();
+}
+
+function renderBossInfo() {
+  const bossName = document.getElementById('bossSelect').value;
+  const boss = bossData.find(b => b.name === bossName);
+  if (!boss || !classData) {
+    document.getElementById('bossInfo').innerHTML = '';
+    return;
+  }
+
+  const sps = classData.avg_stagger_per_second * partySize;
+  const time = sps > 0 ? (boss.paralyzation_max / sps).toFixed(1) : '?';
+
+  document.getElementById('bossInfo').innerHTML = `
+    <div style="margin-bottom:6px"><span class="gauge">${boss.paralyzation_max.toLocaleString()}</span> points</div>
+    <div class="sidebar-stat"><span>Est. Time (${partySize}x)</span><span class="val">${time}s</span></div>
+    <div style="font-size:.7rem;color:var(--text2);margin-top:4px">Full uptime, all stagger skills</div>`;
+}
+
+function toggleSection(id) {
+  const body = document.getElementById(id + 'Body');
+  const btn = document.getElementById(id + 'Btn');
+  body.classList.toggle('collapsed');
+  btn.textContent = body.classList.contains('collapsed') ? 'Show' : 'Hide';
+}
+
+function selectTripod(skillName, tier, slot) {
+  if (!window._selectedTripods) window._selectedTripods = {};
+  if (!window._selectedTripods[skillName]) window._selectedTripods[skillName] = {};
+  // Toggle: clicking already-selected tripod deselects it
+  if (window._selectedTripods[skillName][tier] === slot) {
+    window._selectedTripods[skillName][tier] = null;
+  } else {
+    window._selectedTripods[skillName][tier] = slot;
+  }
+  showSkill(skillName);
+  // Update sidebar stagger value for this skill
+  updateSidebarStagger(skillName);
+}
+
+function updateSidebarStagger(skillName) {
+  if (!classData) return;
+  const skill = classData.skills.find(s => s.name === skillName);
+  if (!skill) return;
+  const stag = getActiveStagger(skill);
+  const max = Math.max(...classData.skills.map(s => getActiveStagger(s)), 1);
+  // Find the sidebar item and update its stagger display
+  document.querySelectorAll('.skill-item').forEach(el => {
+    const nameEl = el.querySelector('.skill-name');
+    if (nameEl && nameEl.textContent === skillName) {
+      const usageEl = el.querySelector('.skill-usage');
+      if (usageEl) {
+        const ratio = stag / max;
+        usageEl.style.color = `rgb(45,${Math.max(100,Math.round(200*ratio))},${Math.max(80,Math.round(143 + (1-ratio)*-80))})`;
+        usageEl.textContent = stag.toLocaleString();
+      }
+    }
+  });
+}
+
+init();
+</script>
+</body>
+</html>

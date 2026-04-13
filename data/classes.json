@@ -1,0 +1,366 @@
+{
+  "berserker": {
+    "class_id": 102,
+    "name": "Berserker",
+    "archetype": "Warrior",
+    "bible_id": "berserker",
+    "engravings": [
+      "Berserker's Technique",
+      "Mayhem"
+    ],
+    "total_skills_with_stagger": 31,
+    "total_base_stagger": 6752,
+    "avg_stagger_per_second": 450.31761155511157
+  },
+  "destroyer": {
+    "class_id": 103,
+    "name": "Destroyer",
+    "archetype": "Warrior",
+    "bible_id": "destroyer",
+    "engravings": [
+      "Rage Hammer",
+      "Gravity Training"
+    ],
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 7994,
+    "avg_stagger_per_second": 381.6931818181818
+  },
+  "warlord": {
+    "class_id": 104,
+    "name": "Gunlancer",
+    "archetype": "Warrior",
+    "bible_id": "warlord",
+    "engravings": [
+      "Combat Readiness",
+      "Lone Knight"
+    ],
+    "total_skills_with_stagger": 23,
+    "total_base_stagger": 6718,
+    "avg_stagger_per_second": 399.6615079365079
+  },
+  "holyknight": {
+    "class_id": 105,
+    "name": "Paladin",
+    "archetype": "Warrior",
+    "bible_id": "holyknight",
+    "engravings": [
+      "Blessed Aura",
+      "Judgment"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 4380,
+    "avg_stagger_per_second": 171.46666666666667
+  },
+  "berserker_female": {
+    "class_id": 113,
+    "name": "Valkyrie",
+    "archetype": "Warrior",
+    "bible_id": "berserker_female",
+    "engravings": [
+      "Twilight Scion",
+      "Dusk Guardian"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 4170,
+    "avg_stagger_per_second": 134.9882373889727
+  },
+  "arcana": {
+    "class_id": 202,
+    "name": "Arcanist",
+    "archetype": "Mage",
+    "bible_id": "arcana",
+    "engravings": [
+      "Order of the Emperor",
+      "Empress's Grace"
+    ],
+    "total_skills_with_stagger": 23,
+    "total_base_stagger": 3899,
+    "avg_stagger_per_second": 182.98902116402115
+  },
+  "summoner": {
+    "class_id": 203,
+    "name": "Summoner",
+    "archetype": "Mage",
+    "bible_id": "summoner",
+    "engravings": [
+      "Master Summoner",
+      "Communication Overflow"
+    ],
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 5904,
+    "avg_stagger_per_second": 1808.122619047619
+  },
+  "bard": {
+    "class_id": 204,
+    "name": "Bard",
+    "archetype": "Mage",
+    "bible_id": "bard",
+    "engravings": [
+      "Desperate Salvation",
+      "True Courage"
+    ],
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 3308,
+    "avg_stagger_per_second": 525.1289682539683
+  },
+  "elemental_master": {
+    "class_id": 205,
+    "name": "Sorceress",
+    "archetype": "Mage",
+    "bible_id": "elemental_master",
+    "engravings": [
+      "Igniter",
+      "Reflux"
+    ],
+    "total_skills_with_stagger": 20,
+    "total_base_stagger": 4093,
+    "avg_stagger_per_second": 146.13380952380953
+  },
+  "battle_master": {
+    "class_id": 302,
+    "name": "Wardancer",
+    "archetype": "Martial Artist",
+    "bible_id": "battle_master",
+    "engravings": [
+      "Esoteric Skill Enhancement",
+      "First Intention"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 4926,
+    "avg_stagger_per_second": 201.3943686868687
+  },
+  "infighter": {
+    "class_id": 303,
+    "name": "Scrapper",
+    "archetype": "Martial Artist",
+    "bible_id": "infighter",
+    "engravings": [
+      "Ultimate Skill: Taijutsu",
+      "Shock Training"
+    ],
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 5986,
+    "avg_stagger_per_second": 303.936858974359
+  },
+  "force_master": {
+    "class_id": 304,
+    "name": "Soulfist",
+    "archetype": "Martial Artist",
+    "bible_id": "force_master",
+    "engravings": [
+      "Energy Overflow",
+      "Robust Spirit"
+    ],
+    "total_skills_with_stagger": 22,
+    "total_base_stagger": 3826,
+    "avg_stagger_per_second": 162.84436507936508
+  },
+  "lance_master": {
+    "class_id": 305,
+    "name": "Glaivier",
+    "archetype": "Martial Artist",
+    "bible_id": "lance_master",
+    "engravings": [
+      "Pinnacle",
+      "Control"
+    ],
+    "total_skills_with_stagger": 27,
+    "total_base_stagger": 5590,
+    "avg_stagger_per_second": 255.91983766233767
+  },
+  "battle_master_male": {
+    "class_id": 312,
+    "name": "Striker",
+    "archetype": "Martial Artist",
+    "bible_id": "battle_master_male",
+    "engravings": [
+      "Esoteric Flurry",
+      "Deathblow"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 5093,
+    "avg_stagger_per_second": 224.2564447102605
+  },
+  "infighter_male": {
+    "class_id": 313,
+    "name": "Breaker",
+    "archetype": "Martial Artist",
+    "bible_id": "infighter_male",
+    "engravings": [
+      "Asura's Path",
+      "Storm Bringer"
+    ],
+    "total_skills_with_stagger": 27,
+    "total_base_stagger": 7175,
+    "avg_stagger_per_second": 288.61001984126983
+  },
+  "blade": {
+    "class_id": 402,
+    "name": "Deathblade",
+    "archetype": "Assassin",
+    "bible_id": "blade",
+    "engravings": [
+      "Remaining Energy",
+      "Surge"
+    ],
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 4986,
+    "avg_stagger_per_second": 957.4300925925926
+  },
+  "demonic": {
+    "class_id": 403,
+    "name": "Shadowhunter",
+    "archetype": "Assassin",
+    "bible_id": "demonic",
+    "engravings": [
+      "Perfect Suppression",
+      "Demonic Impulse"
+    ],
+    "total_skills_with_stagger": 34,
+    "total_base_stagger": 5613,
+    "avg_stagger_per_second": 845.3625
+  },
+  "reaper": {
+    "class_id": 404,
+    "name": "Reaper",
+    "archetype": "Assassin",
+    "bible_id": "reaper",
+    "engravings": [
+      "Lunar Voice",
+      "Hunger"
+    ],
+    "total_skills_with_stagger": 23,
+    "total_base_stagger": 3533,
+    "avg_stagger_per_second": 165.2705844155844
+  },
+  "soul_eater": {
+    "class_id": 405,
+    "name": "Souleater",
+    "archetype": "Assassin",
+    "bible_id": "soul_eater",
+    "engravings": [
+      "Night's Edge",
+      "Full Moon Harvester"
+    ],
+    "total_skills_with_stagger": 21,
+    "total_base_stagger": 4116,
+    "avg_stagger_per_second": 144.0256757131757
+  },
+  "hawk_eye": {
+    "class_id": 502,
+    "name": "Sharpshooter",
+    "archetype": "Gunner",
+    "bible_id": "hawk_eye",
+    "engravings": [
+      "Loyal Companion",
+      "Death Strike"
+    ],
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 4354,
+    "avg_stagger_per_second": 475.41354395604395
+  },
+  "devil_hunter": {
+    "class_id": 503,
+    "name": "Deadeye",
+    "archetype": "Gunner",
+    "bible_id": "devil_hunter",
+    "engravings": [
+      "Enhanced Weapon",
+      "Pistoleer"
+    ],
+    "total_skills_with_stagger": 30,
+    "total_base_stagger": 6923,
+    "avg_stagger_per_second": 244.8322126022126
+  },
+  "blaster": {
+    "class_id": 504,
+    "name": "Artillerist",
+    "archetype": "Gunner",
+    "bible_id": "blaster",
+    "engravings": [
+      "Firepower Enhancement",
+      "Barrage"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 5409,
+    "avg_stagger_per_second": 270.6415343915344
+  },
+  "scouter": {
+    "class_id": 505,
+    "name": "Machinist",
+    "archetype": "Gunner",
+    "bible_id": "scouter",
+    "engravings": [
+      "Evolutionary Legacy",
+      "Arthetinean Skill"
+    ],
+    "total_skills_with_stagger": 28,
+    "total_base_stagger": 5904,
+    "avg_stagger_per_second": 353.0573717948718
+  },
+  "devil_hunter_female": {
+    "class_id": 512,
+    "name": "Gunslinger",
+    "archetype": "Gunner",
+    "bible_id": "devil_hunter_female",
+    "engravings": [
+      "Peacemaker",
+      "Time to Hunt"
+    ],
+    "total_skills_with_stagger": 29,
+    "total_base_stagger": 6567,
+    "avg_stagger_per_second": 245.01492063492063
+  },
+  "yinyangshi": {
+    "class_id": 602,
+    "name": "Artist",
+    "archetype": "Specialist",
+    "bible_id": "yinyangshi",
+    "engravings": [
+      "Recurrence",
+      "Full Bloom"
+    ],
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 4437,
+    "avg_stagger_per_second": 581.2452777777778
+  },
+  "weather_artist": {
+    "class_id": 603,
+    "name": "Aeromancer",
+    "archetype": "Specialist",
+    "bible_id": "weather_artist",
+    "engravings": [
+      "Wind Fury",
+      "Drizzle"
+    ],
+    "total_skills_with_stagger": 22,
+    "total_base_stagger": 4513,
+    "avg_stagger_per_second": 150.98111111111112
+  },
+  "alchemist": {
+    "class_id": 604,
+    "name": "Wildsoul",
+    "archetype": "Specialist",
+    "bible_id": "alchemist",
+    "engravings": [
+      "Beastmaster",
+      "Companion"
+    ],
+    "total_skills_with_stagger": 23,
+    "total_base_stagger": 4959,
+    "avg_stagger_per_second": 1712.7101587301588
+  },
+  "dragon_knight": {
+    "class_id": 702,
+    "name": "Guardian Knight",
+    "archetype": "Specialist",
+    "bible_id": "dragon_knight",
+    "engravings": [
+      "Riptide",
+      "Exalted"
+    ],
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 6854,
+    "avg_stagger_per_second": 289.16285103785106
+  }
+}
