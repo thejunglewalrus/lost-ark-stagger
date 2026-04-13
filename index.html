@@ -325,9 +325,27 @@ async function loadClass(bibleId) {
   classData = await resp.json();
   updateEngravingLabels();
   selectedSkill = null;
+  // Auto-select bible-popular tripods for every skill in this class
+  initPopularTripodsForClass(classData);
   renderSkillList();
   renderSidebar();
   document.getElementById('detailPanel').innerHTML = '<div class="detail-empty">Select a skill to view stagger breakdown</div>';
+}
+
+// Pre-populate window._selectedTripods with bible-popular picks for every
+// skill that has bible data. Clears any stale selections from a previous
+// class. Skills without bible data remain unset so the rail hides them
+// until the user manually selects a tripod.
+function initPopularTripodsForClass(data) {
+  window._selectedTripods = {};
+  if (!data || !data.skills) return;
+  for (const s of data.skills) {
+    if (!hasBiblePopularity(s)) continue;
+    const defaults = getDefaultTripodSlots(s);
+    if (Object.keys(defaults).length) {
+      window._selectedTripods[s.name] = defaults;
+    }
+  }
 }
 
 function renderSkillList() {
