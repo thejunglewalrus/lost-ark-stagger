@@ -232,15 +232,25 @@ function getDefaultTripodSlots(skill) {
   return defaults;
 }
 
-// Returns the current stagger total WITH tripods applied, or null if we
-// don't have enough data to populate the rail (no bible popularity AND no
-// user selection yet).
+// Returns the current stagger total WITH tripods applied, or null when we
+// don't yet have enough data to populate the rail for this skill.
+//
+// Display rules:
+//   - user selection present               -> apply it
+//   - skill has bible popularity           -> apply popular defaults
+//   - skill has no tripods at all          -> show raw base_stagger
+//   - skill has tripods but no bible data  -> null (hide until clicked)
 function getActiveStagger(skill) {
   const userSel = window._selectedTripods && window._selectedTripods[skill.name];
-  // If no user override and no bible popularity, hide the number entirely
+  const hasTripods = Array.isArray(skill.tripod_tiers) && skill.tripod_tiers.length > 0;
+
+  // Skills with no tripods at all can safely show the base value.
+  if (!hasTripods) return skill.base_stagger;
+
+  // Skills with tripods need either a user selection or bible defaults.
   if (!userSel && !hasBiblePopularity(skill)) return null;
+
   let stag = skill.base_stagger;
-  if (!skill.tripod_tiers) return stag;
   const sel = userSel || getDefaultTripodSlots(skill);
   skill.tripod_tiers.forEach(tier => {
     if (sel[tier.tier] != null) {
