@@ -34,9 +34,9 @@
       "Combat Readiness",
       "Lone Knight"
     ],
-    "total_skills_with_stagger": 23,
-    "total_base_stagger": 6718,
-    "avg_stagger_per_second": 399.6615079365079
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 7263,
+    "avg_stagger_per_second": 406.45261904761907
   },
   "holyknight": {
     "class_id": 105,
@@ -47,9 +47,9 @@
       "Blessed Aura",
       "Judgment"
     ],
-    "total_skills_with_stagger": 24,
-    "total_base_stagger": 4380,
-    "avg_stagger_per_second": 171.46666666666667
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 4706,
+    "avg_stagger_per_second": 185.32222222222222
   },
   "berserker_female": {
     "class_id": 113,
@@ -86,7 +86,7 @@
       "Master Summoner",
       "Communication Overflow"
     ],
-    "total_skills_with_stagger": 26,
+    "total_skills_with_stagger": 27,
     "total_base_stagger": 5904,
     "avg_stagger_per_second": 1808.122619047619
   },
@@ -112,9 +112,9 @@
       "Igniter",
       "Reflux"
     ],
-    "total_skills_with_stagger": 20,
-    "total_base_stagger": 4093,
-    "avg_stagger_per_second": 146.13380952380953
+    "total_skills_with_stagger": 21,
+    "total_base_stagger": 4395,
+    "avg_stagger_per_second": 152.17380952380952
   },
   "battle_master": {
     "class_id": 302,
@@ -216,9 +216,9 @@
       "Perfect Suppression",
       "Demonic Impulse"
     ],
-    "total_skills_with_stagger": 34,
-    "total_base_stagger": 5613,
-    "avg_stagger_per_second": 845.3625
+    "total_skills_with_stagger": 36,
+    "total_base_stagger": 5973,
+    "avg_stagger_per_second": 852.9625
   },
   "reaper": {
     "class_id": 404,
@@ -229,9 +229,9 @@
       "Lunar Voice",
       "Hunger"
     ],
-    "total_skills_with_stagger": 23,
-    "total_base_stagger": 3533,
-    "avg_stagger_per_second": 165.2705844155844
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 3667,
+    "avg_stagger_per_second": 171.97058441558443
   },
   "soul_eater": {
     "class_id": 405,
@@ -242,9 +242,9 @@
       "Night's Edge",
       "Full Moon Harvester"
     ],
-    "total_skills_with_stagger": 21,
-    "total_base_stagger": 4116,
-    "avg_stagger_per_second": 144.0256757131757
+    "total_skills_with_stagger": 23,
+    "total_base_stagger": 4627,
+    "avg_stagger_per_second": 186.62567571317572
   },
   "hawk_eye": {
     "class_id": 502,
@@ -281,9 +281,9 @@
       "Firepower Enhancement",
       "Barrage"
     ],
-    "total_skills_with_stagger": 24,
-    "total_base_stagger": 5409,
-    "avg_stagger_per_second": 270.6415343915344
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 6153,
+    "avg_stagger_per_second": 291.1415343915344
   },
   "scouter": {
     "class_id": 505,
@@ -320,9 +320,9 @@
       "Recurrence",
       "Full Bloom"
     ],
-    "total_skills_with_stagger": 24,
-    "total_base_stagger": 4437,
-    "avg_stagger_per_second": 581.2452777777778
+    "total_skills_with_stagger": 25,
+    "total_base_stagger": 4586,
+    "avg_stagger_per_second": 586.2119444444445
   },
   "weather_artist": {
     "class_id": 603,
@@ -333,9 +333,9 @@
       "Wind Fury",
       "Drizzle"
     ],
-    "total_skills_with_stagger": 22,
-    "total_base_stagger": 4513,
-    "avg_stagger_per_second": 150.98111111111112
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 5117,
+    "avg_stagger_per_second": 174.7750505050505
   },
   "alchemist": {
     "class_id": 604,
@@ -359,8 +359,8 @@
       "Riptide",
       "Exalted"
     ],
-    "total_skills_with_stagger": 25,
-    "total_base_stagger": 6854,
-    "avg_stagger_per_second": 289.16285103785106
+    "total_skills_with_stagger": 26,
+    "total_base_stagger": 7308,
+    "avg_stagger_per_second": 294.2072954822955
   }
 }
