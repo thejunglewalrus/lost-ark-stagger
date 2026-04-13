@@ -3,7 +3,7 @@
 A browser-based reference for Lost Ark stagger (paralyzation) values across
 every class, skill, and tripod combination.
 
-[**→ Open the tool**](https://thejunglewalrus.github.io/stagger-tool/)  <!-- update this URL -->
+[**→ Open the tool**](https://thejunglewalrus.github.io/lost-ark-stagger/)
 
 ## What it shows
 
