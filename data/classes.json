@@ -216,9 +216,9 @@
       "Perfect Suppression",
       "Demonic Impulse"
     ],
-    "total_skills_with_stagger": 36,
-    "total_base_stagger": 5973,
-    "avg_stagger_per_second": 852.9625
+    "total_skills_with_stagger": 35,
+    "total_base_stagger": 5832,
+    "avg_stagger_per_second": 500.4625
   },
   "reaper": {
     "class_id": 404,
