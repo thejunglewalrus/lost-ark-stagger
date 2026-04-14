@@ -21,9 +21,9 @@
       "Rage Hammer",
       "Gravity Training"
     ],
-    "total_skills_with_stagger": 25,
-    "total_base_stagger": 7994,
-    "avg_stagger_per_second": 381.6931818181818
+    "total_skills_with_stagger": 24,
+    "total_base_stagger": 7706,
+    "avg_stagger_per_second": 340.55032467532465
   },
   "warlord": {
     "class_id": 104,
