@@ -8,9 +8,9 @@
       "Berserker's Technique",
       "Mayhem"
     ],
-    "total_skills_with_stagger": 29,
-    "total_base_stagger": 6534,
-    "avg_stagger_per_second": 386.31761155511157
+    "total_skills_with_stagger": 28,
+    "total_base_stagger": 6113,
+    "avg_stagger_per_second": 374.6231671106671
   },
   "destroyer": {
     "class_id": 103,
